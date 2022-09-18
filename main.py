@@ -8,7 +8,7 @@ parse.add_argument('--filepath', '-fp', help='Path to file', default="./input", 
 parse.add_argument('--file', '-f', help='File name', default="afr.txt", type=str)
 parse.add_argument('--hidden', '-hi', help='Number of hidden layer', default=256, type=int)
 parse.add_argument('--reverse', '-r', help='Number of hidden layer', default=False, type=bool)
-parse.add_argument('--iters', '-i', help='Number of iter', default=50000, type=int)
+parse.add_argument('--iters', '-i', help='Number of iter', default=70000, type=int)
 
 args = parse.parse_args()
 
@@ -28,4 +28,4 @@ decoder = DecoderRNN(hidden_size, output_lang.n_words, device=device).to(device)
 encoder, decoder = trainIters(encoder, decoder,  n_iters=iters, print_every=5000, pairs=pairs, input_lang=input_lang,
                               output_lang=output_lang, device=device)
 
-evaluateRandomly(encoder, decoder, pairs, n=10, input_lang=input_lang, output_lang=output_lang, device=device)
+evaluateRandomly(encoder, decoder, pairs, n=5, input_lang=input_lang, output_lang=output_lang, device=device)

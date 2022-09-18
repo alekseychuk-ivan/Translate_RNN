@@ -79,7 +79,7 @@ def normalize_string(s, lang='eng'):
     elif lang in ['cmn']:
         s = re.sub(r'[^\u4e00-\u9fff.!?]+', r' ', s)
     elif lang in ['pol']:
-        s = re.sub(r'[^A-Za-zżźćńółęąśŻŹĆĄŚĘŁÓŃ.!?]+', r' ', s)
+        s = re.sub(r'[^A-Za-zAaĄąBbCcĆćDdEeĘęFfGgHhIiJjKkLlŁłMmNnŃńOoÓóPpRrSsŚśTtUuWwYyZzŹźŻż.!?]+', r' ', s)
     elif lang in ['deu']:
         s = re.sub(r'[^a-zA-Z0-9äöüÄÖÜß]+', r' ', s)
     return s
@@ -298,7 +298,7 @@ def evaluateRandomly(encoder, decoder, pairs, input_lang, output_lang, device, n
                                 device=device)
         if pair[1] == ' '.join(output_words[:-1]):
             acc += 1
-    print(f'{acc / len(pairs):.3f}')
+    print(f'Matching translation percentage {acc * 100 / len(pairs):.3f}')
 
 
 def train(input_tensor, target_tensor, encoder, decoder, encoder_optimizer, decoder_optimizer, criterion,
