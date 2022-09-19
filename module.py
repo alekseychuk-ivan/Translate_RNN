@@ -255,7 +255,7 @@ def showPlot(points):
     plt.plot(points)
 
 
-def evaluate(encoder, decoder, sentence, input_lang, output_lang, device, max_length=50,):
+def evaluate(encoder, decoder, sentence, input_lang, output_lang, device, max_length=200,):
     with torch.no_grad():
         input_tensor = tensorFromSentence(input_lang, sentence, device=device)
         input_length = input_tensor.size()[0]
@@ -302,7 +302,7 @@ def evaluateRandomly(encoder, decoder, pairs, input_lang, output_lang, device, n
 
 
 def train(input_tensor, target_tensor, encoder, decoder, encoder_optimizer, decoder_optimizer, criterion,
-          max_length=50, device=torch.device('cpu')):
+          max_length=200, device=torch.device('cpu')):
     # Просто инициализируем скрытое представление для энкодера
     encoder_hidden = encoder.initHidden()
     # Скиыдваем градиенты для алгоритма градиентного спуска как и у энкодера так и у дэкодера
