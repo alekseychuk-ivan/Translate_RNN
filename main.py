@@ -1,6 +1,4 @@
-import torch
-import random
-from module import *
+from utils.module import *
 import argparse
 
 parse = argparse.ArgumentParser()
