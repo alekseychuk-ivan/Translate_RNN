@@ -9,6 +9,10 @@ import matplotlib.ticker as ticker
 import random
 import torch.optim as optim
 import torch.nn.functional as F
+from ignite.metrics.nlp import Bleu
+from torchtext.data.metrics import bleu_score
+import torchmetrics
+
 plt.switch_backend('agg')
 
 
@@ -293,12 +297,17 @@ def evaluateRandomly(encoder, decoder, pairs, input_lang, output_lang, device, n
         output_sentence = ' '.join(output_words)
         print('<', output_sentence)
         print('')
+    bleu = Bleu(ngram=3, smooth="smooth1")
+    wer = torchmetrics.WordErrorRate()
     for pair in pairs:
         output_words = evaluate(encoder, decoder, pair[0], input_lang=input_lang, output_lang=output_lang,
                                 device=device)
-        if pair[1] == ' '.join(output_words[:-1]):
-            acc += 1
-    print(f'Matching translation percentage {acc * 100 / len(pairs):.3f}')
+        bleu.update(([output_words[:-1]], [[pair[1].split()]]))
+        wer.update(' '.join(output_words[:-1]), pair[1])
+        # acc += bleu_score([output_words[:-1]], [[pair[1].split()]], max_n=3, weights=[1 / 3 for _ in range(3)])
+    print(f'BLEU index is {bleu.compute():.3f}')
+    print(f'Word error rate is {wer.compute():.3f}')
+    # print(f'Matching translation percentage {acc * 100 / len(pairs):.3f}')
 
 
 def train(input_tensor, target_tensor, encoder, decoder, encoder_optimizer, decoder_optimizer, criterion,
